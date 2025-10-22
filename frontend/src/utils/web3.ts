@@ -25,7 +25,7 @@ export const NETWORKS = {
   }
 };
 
-export const TARGET_NETWORK = NETWORKS.LOCALHOST;
+export const TARGET_NETWORK = NETWORKS.riseTestnet;
 
 /**
  * Check if MetaMask is installed
