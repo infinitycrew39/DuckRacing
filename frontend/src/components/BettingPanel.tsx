@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 
 const BettingPanel: React.FC = () => {
   const [betAmount, setBetAmount] = useState('0.00001');
-  const [selectedDuck, setSelectedDuck] = useState<number | null>(null);
+  const [selectedHamster, setSelectedHamster] = useState<number | null>(null);
   
   const {
     raceState,
@@ -23,10 +23,10 @@ const BettingPanel: React.FC = () => {
 
   const isLoading = globalLoading || contractLoading;
 
-  // Get selected duck from store and handle race state changes
+  // Get selected hamster from store and handle race state changes
   React.useEffect(() => {
     const selected = ducks.find(duck => duck.selected);
-    setSelectedDuck(selected ? selected.id : null);
+    setSelectedHamster(selected ? selected.id : null);
     
     // Reset local form when new race starts
     if (raceState === RaceState.BETTING && !playerBet?.hasBet) {
@@ -44,8 +44,8 @@ const BettingPanel: React.FC = () => {
       return;
     }
 
-    if (selectedDuck === null) {
-      toast.error('Please select a duck first!');
+    if (selectedHamster === null) {
+      toast.error('Please select a hamster first!');
       return;
     }
 
@@ -71,10 +71,10 @@ const BettingPanel: React.FC = () => {
     }
 
     try {
-      await placeBet(selectedDuck, betAmount);
+      await placeBet(selectedHamster, betAmount);
       
       // Reset form after successful bet (optional)
-      // setSelectedDuck(null);
+      // setSelectedHamster(null);
       // setBetAmount('0.00001');
       
     } catch (error: any) {
@@ -126,7 +126,7 @@ const BettingPanel: React.FC = () => {
     console.log('🔍 CanPlaceBet check:', {
       raceState,
       hasPlayerBet: playerBet?.hasBet,
-      selectedDuck,
+      selectedHamster,
       isLoading,
       currentRace: !!currentRace,
       deadline: currentRace?.deadline,
@@ -139,7 +139,7 @@ const BettingPanel: React.FC = () => {
     
     return canBetInCurrentState && 
            !playerBet?.hasBet && 
-           selectedDuck !== null && 
+           selectedHamster !== null && 
            !isLoading &&
            currentRace &&
            now < currentRace.deadline;
@@ -167,18 +167,18 @@ const BettingPanel: React.FC = () => {
         </div>
       </div>
 
-      {/* Duck Selection */}
+      {/* Hamster Selection */}
       <div className="mb-6">
         <label className="block text-sm font-semibold text-gray-700 mb-3">
-          Select Your Duck:
+          Select Your Hamster:
         </label>
         <div className="grid grid-cols-2 gap-2">
           {ducks.map((duck) => (
             <button
               key={duck.id}
               onClick={() => {
-                const canSelectDuck = raceState === RaceState.BETTING || raceState === RaceState.RACING;
-                if (canSelectDuck) {
+                const canSelectHamster = raceState === RaceState.BETTING || raceState === RaceState.RACING;
+                if (canSelectHamster) {
                   useGameStore.getState().selectDuck(duck.id);
                 }
               }}
@@ -198,7 +198,7 @@ const BettingPanel: React.FC = () => {
               {currentRace && (
                 <div className="text-xs text-gray-500 mt-1">
                   {(() => {
-                    const betAmount = parseFloat(currentRace.duckBets[duck.id] || '0');
+                    const betAmount = parseFloat(currentRace.hamsterBets[duck.id] || '0');
                     return isNaN(betAmount) ? '0.00000' : betAmount.toFixed(5);
                   })()} ETH
                 </div>
@@ -256,7 +256,7 @@ const BettingPanel: React.FC = () => {
         <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
           <h3 className="font-semibold text-green-800 mb-2">Your Current Bet</h3>
           <div className="text-sm text-green-700">
-            <p>Duck: {ducks.find(d => d.id === playerBet.duckId)?.name} #{playerBet.duckId + 1}</p>
+            <p>Hamster: {ducks.find(d => d.id === playerBet.duckId)?.name} #{playerBet.duckId + 1}</p>
             <p>Amount: {(() => {
               const betAmount = parseFloat(playerBet.amount);
               return isNaN(betAmount) ? '0.00000' : betAmount.toFixed(5);

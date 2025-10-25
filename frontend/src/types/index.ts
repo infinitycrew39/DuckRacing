@@ -25,7 +25,7 @@ export interface RaceInfo {
   deadline: number;
   totalPot: string;
   totalBets: number;
-  duckBets: string[];
+  hamsterBets: string[];
 }
 
 export interface Duck {

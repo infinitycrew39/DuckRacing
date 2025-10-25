@@ -1,11 +1,11 @@
-# 🦆 Duck Racing - Frontend
+# 🐹 Hamster Racing - Frontend
 
-A decentralized duck racing game built on blockchain with betting and reward functionality.
+A decentralized hamster racing game built on blockchain with betting and reward functionality.
 
 ## 📋 Description
 
-Duck Racing is an exciting blockchain game where players can:
-- Bet on their favorite ducks
+Hamster Racing is an exciting blockchain game where players can:
+- Bet on their favorite hamsters
 - Watch live races
 - Receive rewards for correct predictions
 - Track personal statistics and leaderboards
@@ -32,7 +32,7 @@ Duck Racing is an exciting blockchain game where players can:
 
 ```bash
 git clone <repository-url>
-cd DuckRacing/frontend
+cd HamsterRacing/frontend
 ```
 
 ### 2. Install dependencies
@@ -79,7 +79,7 @@ The application will run at `http://localhost:5173`
 
 ### Step 2: Join the Race
 1. **Wait for Race Start**: Admin will start a new race
-2. **Select Duck**: Choose one of 4 ducks (Duck 1-4) to bet on
+2. **Select Hamster**: Choose one of 4 hamsters (Hamster 1-4) to bet on
 3. **Enter Bet Amount**: Enter the amount of ETH you want to bet (minimum 0.00001 ETH)
 4. **Confirm Transaction**: Click "Place Bet" and confirm in MetaMask
 
@@ -97,11 +97,11 @@ The application will run at `http://localhost:5173`
 
 - **House Edge**: 5% of total pot will be deducted as operating fee
 - **Reward Distribution**: Remaining 95% is distributed to correct bettors
-- **Reward Ratio**: Depends on total betting amount on the winning duck
+- **Reward Ratio**: Depends on total betting amount on the winning hamster
 
 ### Reward Calculation Formula:
 ```
-Reward = (Your Bet Amount / Total Bets on Winning Duck) × (95% of Total Pot)
+Reward = (Your Bet Amount / Total Bets on Winning Hamster) × (95% of Total Pot)
 ```
 
 ## 🎯 Key Features
@@ -109,7 +109,7 @@ Reward = (Your Bet Amount / Total Bets on Winning Duck) × (95% of Total Pot)
 ### 🎲 Betting System
 - Minimum bet of 0.00001 ETH
 - Betting time: 5 minutes per race
-- Support for 4 ducks to choose from
+- Support for 4 hamsters to choose from
 
 ### 🏁 Fair Racing
 - Uses Chainlink VRF for random number generation
@@ -156,7 +156,7 @@ Run the test suite
 - Try increasing gas price in MetaMask
 
 ### Not receiving rewards
-- Check if you bet on the correct winning duck
+- Check if you bet on the correct winning hamster
 - Wait for transaction confirmation on blockchain
 - Contact support if the issue persists
 

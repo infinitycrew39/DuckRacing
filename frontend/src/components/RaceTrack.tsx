@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 const RaceTrack: React.FC = () => {
   const { ducks, raceState, selectDuck, currentRace, setAnimationWinner } = useGameStore();
   const [raceInProgress, setRaceInProgress] = useState(false);
-  const [duckPositions, setDuckPositions] = useState<number[]>([0, 0, 0, 0]);
+  const [hamsterPositions, setHamsterPositions] = useState<number[]>([0, 0, 0, 0]);
   const [raceTimeLeft, setRaceTimeLeft] = useState<number>(0);
   const [animationWinner, setLocalAnimationWinner] = useState<number | null>(null);
 
@@ -18,11 +18,11 @@ const RaceTrack: React.FC = () => {
     } else if (raceState === RaceState.WAITING) {
       // Only reset positions when waiting for a new race
       setRaceInProgress(false);
-      setDuckPositions([0, 0, 0, 0]);
+      setHamsterPositions([0, 0, 0, 0]);
       setRaceTimeLeft(0);
       setLocalAnimationWinner(null);
     }
-    // Note: Don't reset duck positions when race finishes to keep them at final positions
+    // Note: Don't reset hamster positions when race finishes to keep them at final positions
   }, [raceState]);
 
   // Create deterministic random number generator using race info as seed
@@ -37,7 +37,7 @@ const RaceTrack: React.FC = () => {
   const startRaceAnimation = () => {
     console.log('🏁 Starting 20-second synchronized race animation...');
     setRaceInProgress(true);
-    setDuckPositions([0, 0, 0, 0]);
+    setHamsterPositions([0, 0, 0, 0]);
     
     const startTime = Date.now();
     setRaceTimeLeft(20);
@@ -52,15 +52,15 @@ const RaceTrack: React.FC = () => {
     const RACE_DURATION = 20000; // 20 seconds in milliseconds
     const UPDATE_INTERVAL = 100; // Update every 100ms
     
-    // Generate deterministic speeds for each duck (same for all users)
-    // Ensure at least one duck reaches close to finish line (90-100%)
+    // Generate deterministic speeds for each hamster (same for all users)
+    // Ensure at least one hamster reaches close to finish line (90-100%)
     const baseSpeeds = Array.from({ length: 4 }, () => 0.4 + seededRandom() * 0.5); // Speed between 0.4 and 0.9
     
-    // Ensure the winning duck gets a high speed to reach finish
+    // Ensure the winning hamster gets a high speed to reach finish
     const maxSpeedIndex = baseSpeeds.indexOf(Math.max(...baseSpeeds));
     baseSpeeds[maxSpeedIndex] = Math.max(baseSpeeds[maxSpeedIndex], 0.85); // Winner gets at least 85% speed
     
-    console.log('🦆 Duck speeds for this race (synchronized):', baseSpeeds);
+    console.log('🐹 Hamster speeds for this race (synchronized):', baseSpeeds);
 
     // Update race timer
     const timerInterval = setInterval(() => {
@@ -74,9 +74,9 @@ const RaceTrack: React.FC = () => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / RACE_DURATION, 1); // Progress from 0 to 1
       
-      setDuckPositions(prev => 
+      setHamsterPositions((prev: number[]) => 
         prev.map((_, index) => {
-          // Each duck progresses based on time and their individual deterministic speed
+          // Each hamster progresses based on time and their individual deterministic speed
           const baseProgress = progress * 100; // 0 to 100%
           const speedMultiplier = baseSpeeds[index];
           
@@ -99,43 +99,43 @@ const RaceTrack: React.FC = () => {
         
         console.log('⏰ 20-second race completed! Determining winner...');
         
-        // Determine final winner after 20 seconds - keep ducks at final positions
-        setDuckPositions(finalPositions => {
+        // Determine final winner after 20 seconds - keep hamsters at final positions
+        setHamsterPositions((finalPositions: number[]) => {
           const maxPosition = Math.max(...finalPositions);
-          const winnerIndex = finalPositions.findIndex(pos => pos === maxPosition);
+          const winnerIndex = finalPositions.findIndex((pos: number) => pos === maxPosition);
           
           console.log('🏆 Final positions:', finalPositions);
-          console.log(`🥇 Duck ${winnerIndex + 1} wins with position: ${maxPosition.toFixed(1)}%`);
+          console.log(`🥇 Hamster ${winnerIndex + 1} wins with position: ${maxPosition.toFixed(1)}%`);
           
           // Set local animation winner for UI display
           setLocalAnimationWinner(winnerIndex);
           // Set global animation winner to be used by smart contract
           setAnimationWinner(winnerIndex);
-          console.log(`🎯 Animation winner set: Duck ${winnerIndex}`);
+          console.log(`🎯 Animation winner set: Hamster ${winnerIndex}`);
           
           // Show winner notification
-          toast.success(`🏆 Duck ${winnerIndex + 1} (${ducks[winnerIndex]?.name}) wins the race!`, {
+          toast.success(`🏆 Hamster ${winnerIndex + 1} (${ducks[winnerIndex]?.name}) wins the race!`, {
             id: 'animation-winner',
             duration: 10000,
             icon: '🏆'
           });
           
-          // Keep ducks at their final positions (don't reset to 0)
+          // Keep hamsters at their final positions (don't reset to 0)
           return finalPositions;
         });
       }
     }, UPDATE_INTERVAL);
   };
 
-  const handleDuckClick = (duckId: number) => {
+  const handleHamsterClick = (hamsterId: number) => {
     if (raceState === RaceState.BETTING || raceState === RaceState.RACING) {
-      selectDuck(duckId);
+      selectDuck(hamsterId);
     }
   };
 
-  const getDuckTrailColor = (duckId: number) => {
+  const getHamsterTrailColor = (hamsterId: number) => {
     const colors = ['yellow', 'blue', 'green', 'purple'];
-    return colors[duckId] || 'blue';
+    return colors[hamsterId] || 'blue';
   };
 
   return (
@@ -144,10 +144,10 @@ const RaceTrack: React.FC = () => {
         <h2 className="text-2xl font-bold text-gray-800 mb-2">Race Track</h2>
         <div className="flex justify-between items-center">
           <p className="text-gray-600 text-sm">
-            {raceState === RaceState.BETTING && 'Click on a duck to select it for betting!'}
+            {raceState === RaceState.BETTING && 'Click on a hamster to select it for betting!'}
             {raceState === RaceState.RACING && !raceInProgress && 'Race starting soon... 🏁'}
-            {raceState === RaceState.RACING && raceInProgress && 'Ducks are racing! 🏃‍♂️💨'}
-            {raceState === RaceState.FINISHED && animationWinner !== null && `Duck ${animationWinner + 1} (${ducks[animationWinner]?.name}) wins the race! 🏆`}
+            {raceState === RaceState.RACING && raceInProgress && 'Hamsters are racing! 🏃‍♂️💨'}
+            {raceState === RaceState.FINISHED && animationWinner !== null && `Hamster ${animationWinner + 1} (${ducks[animationWinner]?.name}) wins the race! 🏆`}
             {raceState === RaceState.FINISHED && animationWinner === null && 'Race finished! Determining winner...'}
             {raceState === RaceState.WAITING && 'Waiting for the next race to begin...'}
           </p>
@@ -172,7 +172,7 @@ const RaceTrack: React.FC = () => {
           </span>
         </div>
 
-        {/* Duck Lanes */}
+        {/* Hamster Lanes */}
         <div className="space-y-6">
           {ducks.map((duck, index) => (
             <div key={duck.id} className="relative h-20">
@@ -187,12 +187,12 @@ const RaceTrack: React.FC = () => {
               {/* Progress Track */}
               <div className="absolute left-12 right-12 top-1/2 transform -translate-y-1/2 h-2 bg-gray-200 rounded-full">
                 <div 
-                  className={`h-full bg-gradient-to-r from-${getDuckTrailColor(index)}-300 to-${getDuckTrailColor(index)}-500 rounded-full transition-all duration-300`}
-                  style={{ width: `${duckPositions[index]}%` }}
+                  className={`h-full bg-gradient-to-r from-${getHamsterTrailColor(index)}-300 to-${getHamsterTrailColor(index)}-500 rounded-full transition-all duration-300`}
+                  style={{ width: `${hamsterPositions[index]}%` }}
                 />
               </div>
 
-              {/* Duck */}
+              {/* Hamster */}
               <motion.div
                 className={`absolute top-1/2 transform -translate-y-1/2 cursor-pointer ${
                   duck.selected && (raceState === RaceState.BETTING || raceState === RaceState.RACING)
@@ -204,9 +204,9 @@ const RaceTrack: React.FC = () => {
                     : ''
                 }`}
                 style={{
-                  left: `${12 + (duckPositions[index] * 0.75)}%`,
+                  left: `${12 + (hamsterPositions[index] * 0.75)}%`,
                 }}
-                onClick={() => handleDuckClick(duck.id)}
+                onClick={() => handleHamsterClick(duck.id)}
                 animate={
                   raceInProgress
                     ? {
@@ -235,7 +235,7 @@ const RaceTrack: React.FC = () => {
                 </div>
               </motion.div>
 
-              {/* Duck Name */}
+              {/* Hamster Name */}
               <div className="absolute right-2 top-1/2 transform -translate-y-1/2 text-sm font-semibold text-gray-600 bg-white px-2 py-1 rounded border">
                 {duck.name}
               </div>
@@ -293,7 +293,7 @@ const RaceTrack: React.FC = () => {
           <span className="text-lg">ℹ️</span>
           <div className="text-sm">
             {raceState === RaceState.BETTING && (
-              <p><strong>Betting Phase:</strong> Select a duck and place your bet before time runs out!</p>
+              <p><strong>Betting Phase:</strong> Select a hamster and place your bet before time runs out!</p>
             )}
             {raceState === RaceState.RACING && (
               <p><strong>Racing Phase:</strong> Race started! You can still bet until the deadline expires!</p>
@@ -302,7 +302,7 @@ const RaceTrack: React.FC = () => {
               <p><strong>Race Complete:</strong> Check your winnings and get ready for the next race!</p>
             )}
             {raceState === RaceState.WAITING && (
-              <p><strong>Waiting:</strong> Get ready for the next exciting duck race!</p>
+              <p><strong>Waiting:</strong> Get ready for the next exciting hamster race!</p>
             )}
           </div>
         </div>

@@ -26,11 +26,11 @@ const Leaderboard: React.FC = () => {
             </div>
           </div>
           
-          {/* Duck Betting Odds */}
-          <div className="mt-3">
-            <h4 className="text-xs font-semibold text-gray-600 mb-2">Betting Pool by Duck:</h4>
+          {/* Hamster Betting Odds */}
+          <div className="mb-4">
+            <h4 className="text-xs font-semibold text-gray-600 mb-2">Betting Pool by Hamster:</h4>
             <div className="space-y-1">
-              {currentRace.duckBets.map((bet, index) => {
+              {currentRace.hamsterBets.map((bet, index) => {
                 // Safe percentage calculation with proper error handling
                 let percentage = '0.0';
                 try {
@@ -41,15 +41,15 @@ const Leaderboard: React.FC = () => {
                     percentage = ((betAmount / totalPot) * 100).toFixed(1);
                   }
                 } catch (error) {
-                  console.warn('Error calculating percentage for duck', index + 1, ':', error);
+                  console.warn('Error calculating percentage for hamster', index + 1, ':', error);
                   percentage = '0.0';
                 }
                   
                 return (
                   <div key={index} className="flex items-center justify-between text-xs">
                     <span className="flex items-center">
-                      <span className="mr-2">🦆</span>
-                      Duck {index + 1}
+                      <span className="mr-2">🐹</span>
+                      Hamster {index + 1}
                     </span>
                     <span className="flex items-center">
                       <span className="mr-2">{(() => {
@@ -90,7 +90,12 @@ const Leaderboard: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <span className="text-lg">🏆</span>
-                    <span className="text-sm font-medium">Duck {race.winnerDuck + 1} Won!</span>
+                    <span className="text-sm font-medium">
+                      {race.winnerDuck !== undefined && race.winnerDuck !== null && !isNaN(race.winnerDuck) 
+                        ? `Hamster ${race.winnerDuck + 1} Won!`
+                        : 'Race Completed!'
+                      }
+                    </span>
                   </div>
                   <div className="text-right">
                     <div className="text-sm font-semibold text-green-600">
@@ -127,21 +132,21 @@ const Leaderboard: React.FC = () => {
             </div>
           </div>
           
-          {/* Most Winning Duck */}
+          {/* Most Winning Hamster */}
           {(() => {
-            const duckWins = [0, 0, 0, 0];
+            const hamsterWins = [0, 0, 0, 0];
             raceHistory.forEach(race => {
-              if (race.winnerDuck >= 0 && race.winnerDuck < 4) {
-                duckWins[race.winnerDuck]++;
+              if (race.winnerDuck !== undefined && race.winnerDuck !== null && !isNaN(race.winnerDuck) && race.winnerDuck >= 0 && race.winnerDuck < 4) {
+                hamsterWins[race.winnerDuck]++;
               }
             });
-            const topDuck = duckWins.indexOf(Math.max(...duckWins));
-            const topWins = duckWins[topDuck];
+            const topHamster = hamsterWins.indexOf(Math.max(...hamsterWins));
+            const topWins = hamsterWins[topHamster];
             
             return topWins > 0 ? (
               <div className="mt-2 text-center p-2 bg-yellow-50 border border-yellow-200 rounded">
                 <div className="text-xs text-yellow-800">
-                  🏆 Most Successful: Duck {topDuck + 1} ({topWins} wins)
+                  🏆 Most Successful: Hamster {topHamster + 1} ({topWins} wins)
                 </div>
               </div>
             ) : null;

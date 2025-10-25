@@ -16,7 +16,7 @@ const Header: React.FC = () => {
       case RaceState.FINISHED:
         return 'Race finished!';
       default:
-        return 'Duck Racing';
+        return 'Hamster Racing';
     }
   };
 
@@ -41,9 +41,9 @@ const Header: React.FC = () => {
         <div className="flex items-center justify-between">
           {/* Logo and Title */}
           <div className="flex items-center space-x-3">
-            <div className="text-4xl">🦆</div>
+            <div className="text-4xl">🐹</div>
             <div>
-              <h1 className="text-2xl font-bold text-gradient">Duck Racing</h1>
+              <h1 className="text-2xl font-bold text-gradient">Hamster Racing</h1>
               <p className={`text-sm ${getRaceStatusColor()}`}>
                 {getRaceStatusText()}
               </p>

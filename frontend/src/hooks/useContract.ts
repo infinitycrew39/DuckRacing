@@ -6,7 +6,7 @@ import { RaceState } from '../types';
 import toast from 'react-hot-toast';
 // import { DuckRacingAddresses } from "../contracts/FHECounterAddresses";
 import { DuckRacingAddresses } from "../contracts/DuckRacingAddresses";
-import { DuckRacingABI } from "../contracts/DuckRacing";
+import { HamsterRacingABI } from "../contracts/HamsterRacing";
 // This will be replaced with the actual contract address and ABI after deployment
 let contractAddress = "";
 let contractABI: any[] = [];
@@ -14,7 +14,7 @@ let contractABI: any[] = [];
 try {
   // Force use localhost address since we're running hardhat node
   contractAddress = DuckRacingAddresses["11155931"].address;
-  contractABI = DuckRacingABI.abi;
+  contractABI = HamsterRacingABI.abi;
   console.log('📍 Using hardhat localhost contract address:', contractAddress);
 } catch (error) {
   console.warn('Contract data not found. Please deploy the contract first.', error);
@@ -278,7 +278,7 @@ export const useContract = () => {
         throw new Error('Contract not deployed at this address');
       }
       
-      const [id, inProgress, deadline, totalPot, totalBets, duckBets] = await contract.getCurrentRaceInfo();
+      const [id, inProgress, deadline, totalPot, totalBets, hamsterBets] = await contract.getCurrentRaceInfo();
       
       console.log('� Raw data from contract:', {
         id: id.toString(),
@@ -286,7 +286,7 @@ export const useContract = () => {
         deadline: deadline.toString(),
         totalPot: totalPot.toString(),
         totalBets: totalBets.toString(),
-        duckBets: duckBets.map((bet: any) => bet.toString())
+        hamsterBets: hamsterBets.map((bet: any) => bet.toString())
       });
       
       console.log('�📊 Race info loaded:', {
@@ -295,7 +295,7 @@ export const useContract = () => {
         deadline: Number(deadline),
         totalPot: formatEther(totalPot),
         totalBets: Number(totalBets),
-        duckBets: duckBets.map((bet: any) => formatEther(bet))
+        hamsterBets: hamsterBets.map((bet: any) => formatEther(bet))
       });
       
       const raceInfo = {
@@ -304,7 +304,7 @@ export const useContract = () => {
         deadline: Number(deadline),
         totalPot: formatEther(totalPot),
         totalBets: Number(totalBets),
-        duckBets: duckBets.map((bet: any) => {
+        hamsterBets: hamsterBets.map((bet: any) => {
           try {
             return formatEther(bet);
           } catch (error) {
@@ -395,12 +395,13 @@ export const useContract = () => {
       
       const formattedHistory = history.map((race: any) => ({
         id: Number(race.id),
-        winnerDuck: Number(race.winnerDuck),
+        winnerDuck: Number(race.winnerDuck || race.winnerHamster || 0), // Handle both field names and default to 0 if undefined
         totalPot: formatEther(race.totalPot),
         timestamp: Number(race.timestamp),
         totalBets: Number(race.totalBets)
       }));
       
+      console.log('📊 Formatted race history:', formattedHistory);
       setRaceHistory(formattedHistory);
     } catch (error) {
       console.error('Error loading race history:', error);
@@ -450,7 +451,7 @@ export const useContract = () => {
       // Only show toast for the current player and use unique ID to prevent duplicates
       if (player.toLowerCase() === account?.toLowerCase()) {
         const toastId = `bet-${player.slice(-6)}-${Number(raceId)}-${Number(duckId)}`;
-        toast.success(`Bet placed on Duck ${Number(duckId) + 1}!`, { id: toastId });
+        toast.success(`Bet placed on Hamster ${Number(duckId) + 1}!`, { id: toastId });
         
         setPlayerBet({
           duckId: Number(duckId),
@@ -478,7 +479,7 @@ export const useContract = () => {
       
       // Use unique toast ID to prevent duplicates
       const toastId = `race-ended-${Number(raceId)}-${Number(winnerDuck)}`;
-      toast.success(`Duck ${Number(winnerDuck) + 1} wins the race!`, { id: toastId });
+      toast.success(`Hamster ${Number(winnerDuck) + 1} wins the race!`, { id: toastId });
       
       // Reload data after race ends with debounce
       setTimeout(() => {
@@ -561,7 +562,7 @@ export const useContract = () => {
     try {
       setLoading(true);
       
-      console.log(`🎯 Placing bet on duck ${duckId} with ${betAmount} ETH`);
+      console.log(`🎯 Placing bet on hamster ${duckId} with ${betAmount} ETH`);
       
       const tx = await contract.placeBet(duckId, {
         value: ethers.parseEther(betAmount)
