@@ -92,8 +92,8 @@ function App() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
         <div className="card max-w-md text-center">
-          <div className="text-6xl mb-6">🦆</div>
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">Duck Racing</h1>
+          <div className="text-6xl mb-6">🐹</div>
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">Hamster Racing</h1>
           <p className="text-gray-600 mb-6">
             You need MetaMask to play this game. Please install MetaMask browser extension to continue.
           </p>
@@ -137,10 +137,10 @@ function App() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
         <div className="card max-w-md text-center">
-          <div className="text-6xl mb-6">🦆</div>
-          <h1 className="text-3xl font-bold text-gradient mb-4">Duck Racing</h1>
+          <div className="text-6xl mb-6">🐹</div>
+          <h1 className="text-3xl font-bold text-gradient mb-4">Hamster Racing</h1>
           <p className="text-gray-600 mb-6">
-            Connect your MetaMask wallet to start betting on duck races!
+            Connect your MetaMask wallet to start betting on hamster races!
           </p>
           <button
             onClick={handleConnectWallet}

@@ -1,11 +1,11 @@
 import { create } from 'zustand';
 import { GameState, RaceState, Duck, Race, PlayerBet, PlayerStats, RaceInfo } from '../types';
 
-const DUCK_DATA: Duck[] = [
-  { id: 0, name: 'Quackers', emoji: '🦆', color: 'text-yellow-500', position: 0, selected: false },
-  { id: 1, name: 'Splash', emoji: '🦆', color: 'text-blue-500', position: 0, selected: false },
-  { id: 2, name: 'Waddle', emoji: '🦆', color: 'text-green-500', position: 0, selected: false },
-  { id: 3, name: 'Floaty', emoji: '🦆', color: 'text-purple-500', position: 0, selected: false },
+const HAMSTER_DATA: Duck[] = [
+  { id: 0, name: 'Speedy', emoji: '🐹', color: 'text-yellow-500', position: 0, selected: false },
+  { id: 1, name: 'Whiskers', emoji: '🐹', color: 'text-blue-500', position: 0, selected: false },
+  { id: 2, name: 'Nibbles', emoji: '🐹', color: 'text-green-500', position: 0, selected: false },
+  { id: 3, name: 'Fluffy', emoji: '🐹', color: 'text-purple-500', position: 0, selected: false },
 ];
 
 interface GameStore extends GameState {
@@ -37,7 +37,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   playerBet: null,
   playerStats: null,
   raceHistory: [],
-  ducks: DUCK_DATA,
+  ducks: HAMSTER_DATA,
   winner: null,
   animationWinner: null,
   isConnected: false,
